@@ -28,6 +28,7 @@
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.1",
     "react-dom": "^15.6.1",
+    "react-masonry-component": "^5.0.7",
     "react-tap-event-plugin": "^2.0.1",
     "serve-favicon": "~2.4.2",
     "tether": "^1.4.0",
