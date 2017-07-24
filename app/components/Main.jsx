@@ -14,22 +14,53 @@ var appUrl = window.location.origin;
 class Main extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {pics: [], Loading: 'true'};
+    this.state = {pics: [], Loading: 'true', page: 'MyPics'};
+    this.getAllPics = this.getAllPics.bind(this);
+    this.getUserPics = this.getUserPics.bind(this);
   }
-
-  componentDidMount() {
+  getAllPics() {
     var self = this;
     Ajax.get(appUrl+'/api/pics', function(err, data) {
+      if(err) {
+        return console.log(err);
+      }
+      // console.log(data);
+      self.setState({
+        pics: data,
+        Loading: 'false',
+        page: 'All'
+      })
+    });
+  }
+  getUserPics() {
+    var self = this;
+    Ajax.get(appUrl+'/api/pics/'+this.props.user._id, function(err, data) {
       if(err) {
         return console.log(err);
       }
       console.log(data);
       self.setState({
         pics: data,
-        Loading: 'false'
+        Loading: 'false',
+        page: 'MyPics'
       })
-
     });
+  }
+
+  componentDidUpdate() {
+    var self = this;
+    console.log(this.props.page);
+    if(this.state.page != this.props.page) {
+      if(this.state.Loading != 'true'){
+        this.setState({Loading: 'true'});
+      }
+      if(this.props.page=='All'){
+        this.getAllPics();
+      } else {
+        this.getUserPics();
+      }
+    }
+
   }
 
   render(){
