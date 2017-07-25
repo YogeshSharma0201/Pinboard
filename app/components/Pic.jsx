@@ -8,9 +8,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 
 const style = {
-  marginRight: 20,
+  marginRight: 6,
   button: {
-    margin: 12,
+    margin: "12 2 12 2",
   }
 };
 
@@ -26,6 +26,7 @@ class Pic extends React.Component {
               <CardHeader
                 title={this.props.pic.owenerId.twitter.displayName}
                 subtitle={this.props.pic.description}
+                style={style.marginRight}
                 avatar={this.props.pic.owenerId.twitter.imageUrl}
               />
             </div>

@@ -18,8 +18,10 @@ injectTapEventPlugin();
 class App extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {page: 'All', user:{twitter:{}}};
+    this.state = {page: 'All', user:{twitter:{}}, update: false};
     this.changePage = this.changePage.bind(this);
+    this.addPic = this.addPic.bind(this);
+    this.updateComplete = this.updateComplete.bind(this);
   }
   componentDidMount() {
     var self = this;
@@ -38,16 +40,35 @@ class App extends React.Component{
       }
     });
   }
+
   changePage(page) {
     this.setState({page});
   }
+
+  addPic(url, desc) {
+    url = url.trim();
+    desc = desc.trim();
+    desc = desc || 'a pic by @' + this.state.user.twitter.username;
+    if(url.length>0) {
+      Ajax.post(appUrl+'/api/pics', {url, description: desc}, function(err, d) {
+          if(err) return console.log(err.responseText);
+          console.log(d);
+          this.setState({update: true, pic: d});
+      }.bind(this));
+    }
+  }
+
+  updateComplete() {
+    this.setState({update: false});
+  }
+  
   render(){
-    var {page, user} = this.state;
+    var {page, user, update, pic} = this.state;
     return (
       <MuiThemeProvider>
         <div>
-          <NavBar page={page} changePage={this.changePage}/>
-          <Main page={page} user={user}/>
+          <NavBar page={page} addPic={this.addPic} changePage={this.changePage}/>
+          <Main page={page} user={user} update={update} pic={pic} updateComplete={this.updateComplete}/>
         </div>
       </MuiThemeProvider>
     );

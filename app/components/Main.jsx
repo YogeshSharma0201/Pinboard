@@ -14,7 +14,7 @@ var appUrl = window.location.origin;
 class Main extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {pics: [], Loading: 'true', page: 'MyPics'};
+    this.state = {pics: [], Loading: 'true', page: 'MyPics', update: false};
     this.getAllPics = this.getAllPics.bind(this);
     this.getUserPics = this.getUserPics.bind(this);
   }
@@ -60,8 +60,20 @@ class Main extends React.Component{
         this.getUserPics();
       }
     }
-
+    if(this.props.update == true) {
+       if(this.state.update == false) {
+        console.log('here');
+        var pics = this.state.pics;
+        pics.unshift(this.props.pic);
+        this.setState({pics: pics, update: true});
+      } else {
+        this.props.updateComplete();
+      }
+    } else if(this.state.update==true){
+      this.setState({update: false});
+    }
   }
+
 
   render(){
     var childElements = this.state.pics.map(function(pic, i) {
