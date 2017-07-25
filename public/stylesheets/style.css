@@ -9,5 +9,31 @@ a {
 
 .my-gallery-class .grid-items{
   margin: 6px;
-  width: 390px;
+  width: 310px;
+}
+
+.my-gallery-class {
+  margin: 0 auto;
+}
+
+.cardHeader > div{
+  padding-right: 10px !important;
+}
+
+.cardHeader > img{
+  margin-right: 8px !important;
+}
+
+.cardActions {
+  padding: 8px 6px !important;
+}
+
+.cardActions > div {
+  min-width: 50px !important;
+  margin-right: 0px !important;
+}
+
+.container-class {
+  max-width: 1024px;
+  margin: 0 auto;
 }

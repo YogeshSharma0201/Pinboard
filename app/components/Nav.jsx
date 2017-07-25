@@ -49,6 +49,31 @@ class NavBar extends React.Component{
   }
 
   render(){
+    console.log('loggedIn', this.props.loggedIn);
+    // var ifLoggedIn = function(){
+    //   if(this.props.loggedIn === true) {
+    //     return (
+    //       <li className="dropdown">
+    //         <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
+    //         <ul className="dropdown-menu">
+    //           <li><a href="#">Action</a></li>
+    //           <li><a href="#">Another action</a></li>
+    //           <li role="separator" className="divider"></li>
+    //           <li><a href="#">Separated link</a></li>
+    //         </ul>
+    //       </li>
+    //     );
+    //   }
+    // }.bind(this);
+    var LogInButton = function() {
+      if(this.props.loggedIn) {
+        return (<li><a href="#" onClick={this.handleLogOut}>Logout</a></li>);
+      } else {
+        return (
+          <li><a href="#" onClick={this.handleLogIn}><i className="fa fa-twitter-square" aria-hidden="true"></i> Login with twitter</a></li>
+        );
+      }
+    }.bind(this);
     return (
       <div>
         <nav className="navbar navbar-default">
@@ -86,16 +111,7 @@ class NavBar extends React.Component{
                 <button type="submit" className="btn btn-default">Search</button>
               </form>
               <ul className="nav navbar-nav navbar-right">
-                <li><a href="#"><i className="fa fa-twitter-square" aria-hidden="true"></i> Login with twitter</a></li>
-                <li className="dropdown">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span className="caret"></span></a>
-                  <ul className="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li role="separator" className="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </li>
+                {LogInButton()}
               </ul>
             </div>
           </div>

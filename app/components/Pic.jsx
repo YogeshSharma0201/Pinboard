@@ -5,7 +5,9 @@ import StarIcon from 'material-ui/svg-icons/toggle/star';
 import StarBorderIcon from 'material-ui/svg-icons/toggle/star-border';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
+import Ajax from './../utils/ajaxFunctions';
 
+var appUrl = window.location.origin;
 
 const style = {
   marginRight: 6,
@@ -15,28 +17,66 @@ const style = {
 };
 
 class Pic extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {likers: this.props.pic.likers.length, liked: false}
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    var liked = false;
+    this.props.pic.likers.forEach(function(liker) {
+      if(liker === this.props.pic.owenerId._id) {
+        liked = true;
+      }
+    }.bind(this));
+    this.setState({liked});
+  }
+
+  handleClick(e) {
+    if(this.state.liked === true) {
+      Ajax.put(appUrl+'/api/pics/'+this.props.pic._id, {}, function(err, data) {
+        if(err) {
+          return console.log(err);
+        }
+        this.setState({liked: !this.state.liked, likers: this.state.likers-1});
+      }.bind(this));
+    } else {
+      Ajax.post(appUrl+'/api/pics/'+this.props.pic._id, {}, function(err, data) {
+        if(err) {
+          return console.log(err);
+        }
+        this.setState({liked: !this.state.liked, likers: this.state.likers+1});
+      }.bind(this));
+    }
+  }
+
   render() {
+    var {likers, liked} = this.state;
+    var likers = likers.toString();
     return (
         <Card className="grid-items">
           <CardMedia>
             <img src={this.props.pic.url} alt="" />
           </CardMedia>
           <div style={{display:'flex'}}>
-            <div>
+            <div style={{flex: '3'}}>
               <CardHeader
+                className="cardHeader"
                 title={this.props.pic.owenerId.twitter.displayName}
                 subtitle={this.props.pic.description}
-                style={style.marginRight}
                 avatar={this.props.pic.owenerId.twitter.imageUrl}
+                style={{padding: '5px'}}
               />
             </div>
-            <div >
-              <CardActions>
+            <div>
+              <CardActions className="cardActions">
                 <RaisedButton
-                  label="3"
+                  label={likers}
                   secondary={true}
                   style={style.button}
-                  icon={<StarBorderIcon />}
+                  icon={liked?<StarIcon/>:<StarBorderIcon />}
+                  onTouchTap={this.handleClick}
                 />
               </CardActions>
             </div>

@@ -11,14 +11,10 @@ var appUrl = window.location.origin;
 
 injectTapEventPlugin();
 
-// function handleSelect(selectedKey) {
-//   alert('selected ' + selectedKey);
-// }
-
 class App extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {page: 'All', user:{twitter:{}}, update: false};
+    this.state = {page: 'All', user:{twitter:{}}, update: false, loggedIn: false};
     this.changePage = this.changePage.bind(this);
     this.addPic = this.addPic.bind(this);
     this.updateComplete = this.updateComplete.bind(this);
@@ -61,13 +57,13 @@ class App extends React.Component{
   updateComplete() {
     this.setState({update: false});
   }
-  
+
   render(){
-    var {page, user, update, pic} = this.state;
+    var {page, user, update, pic, loggedIn} = this.state;
     return (
       <MuiThemeProvider>
         <div>
-          <NavBar page={page} addPic={this.addPic} changePage={this.changePage}/>
+          <NavBar page={page} addPic={this.addPic} changePage={this.changePage} loggedIn={loggedIn}/>
           <Main page={page} user={user} update={update} pic={pic} updateComplete={this.updateComplete}/>
         </div>
       </MuiThemeProvider>

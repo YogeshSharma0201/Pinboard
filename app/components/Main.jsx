@@ -105,7 +105,7 @@ class Main extends React.Component{
       }
     };
     return (
-      <div>
+      <div className='container-class'>
         {RenderPics()}
       </div>
     );
