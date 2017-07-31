@@ -22,6 +22,7 @@ a {
 
 .cardHeader > img{
   margin-right: 8px !important;
+  cursor: pointer;
 }
 
 .cardActions {
@@ -36,4 +37,16 @@ a {
 .container-class {
   max-width: 1024px;
   margin: 0 auto;
+}
+
+.grid-items {
+  -webkit-box-shadow: 4px 9px 25px -4px rgba(0,0,0,0.75) !important;
+  -moz-box-shadow: 4px 9px 25px -4px rgba(0,0,0,0.75) !important;
+  box-shadow: 4px 9px 25px -4px rgba(0,0,0,0.75) !important;
+}
+
+.grid-items:hover {
+  -webkit-box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px !important;
+  -moz-box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px !important;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px !important;
 }

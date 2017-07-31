@@ -21,6 +21,7 @@ class Pic extends React.Component {
     super(props);
     this.state = {likers: this.props.pic.likers.length, liked: false}
     this.handleClick = this.handleClick.bind(this);
+    this.handleAvatarClick = this.handleAvatarClick.bind(this);
   }
 
   componentDidMount() {
@@ -34,20 +35,31 @@ class Pic extends React.Component {
   }
 
   handleClick(e) {
-    if(this.state.liked === true) {
-      Ajax.put(appUrl+'/api/pics/'+this.props.pic._id, {}, function(err, data) {
-        if(err) {
-          return console.log(err);
-        }
-        this.setState({liked: !this.state.liked, likers: this.state.likers-1});
-      }.bind(this));
+    if(this.props.loggedIn !== true) {
+      alert('You need to be logged In to like a pic.');
     } else {
-      Ajax.post(appUrl+'/api/pics/'+this.props.pic._id, {}, function(err, data) {
-        if(err) {
-          return console.log(err);
-        }
-        this.setState({liked: !this.state.liked, likers: this.state.likers+1});
-      }.bind(this));
+      if(this.state.liked === true) {
+        Ajax.put(appUrl+'/api/pics/'+this.props.pic._id, {}, function(err, data) {
+          if(err) {
+            return console.log(err);
+          }
+          this.setState({liked: !this.state.liked, likers: this.state.likers-1});
+        }.bind(this));
+      } else {
+        Ajax.post(appUrl+'/api/pics/'+this.props.pic._id, {}, function(err, data) {
+          if(err) {
+            return console.log(err);
+          }
+          this.setState({liked: !this.state.liked, likers: this.state.likers+1});
+        }.bind(this));
+      }
+    }
+  }
+
+  handleAvatarClick(e) {
+    if(e.target.nodeName === 'IMG') {
+      var user = this.props.pic.owenerId;
+      this.props.handleViewUser(user);
     }
   }
 
@@ -61,7 +73,7 @@ class Pic extends React.Component {
           </CardMedia>
           <div style={{display:'flex'}}>
             <div style={{flex: '3'}}>
-              <CardHeader
+              <CardHeader onTouchTap={this.handleAvatarClick}
                 className="cardHeader"
                 title={this.props.pic.owenerId.twitter.displayName}
                 subtitle={this.props.pic.description}

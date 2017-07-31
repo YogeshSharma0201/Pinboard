@@ -14,10 +14,12 @@ injectTapEventPlugin();
 class App extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {page: 'All', user:{twitter:{}}, update: false, loggedIn: false};
+    this.state = {page: 'All', user:{twitter:{}}, update: false, loggedIn: false,
+                  viewUser: {twitter:{}}};
     this.changePage = this.changePage.bind(this);
     this.addPic = this.addPic.bind(this);
     this.updateComplete = this.updateComplete.bind(this);
+    this.handleViewUser = this.handleViewUser.bind(this);
   }
   componentDidMount() {
     var self = this;
@@ -58,13 +60,30 @@ class App extends React.Component{
     this.setState({update: false});
   }
 
+  handleViewUser(user) {
+    this.setState({viewUser: user, page: 'UserPics'})
+  }
+
   render(){
-    var {page, user, update, pic, loggedIn} = this.state;
+    var {page, user, update, pic, loggedIn, viewUser} = this.state;
     return (
       <MuiThemeProvider>
         <div>
-          <NavBar page={page} addPic={this.addPic} changePage={this.changePage} loggedIn={loggedIn}/>
-          <Main page={page} user={user} update={update} pic={pic} updateComplete={this.updateComplete}/>
+          <NavBar page={page}
+                  addPic={this.addPic}
+                  changePage={this.changePage}
+                  loggedIn={loggedIn}
+                  hand
+          />
+          <Main page={page}
+                user={user}
+                update={update}
+                pic={pic}
+                loggedIn={loggedIn}
+                updateComplete={this.updateComplete}
+                viewUser={viewUser}
+                handleViewUser={this.handleViewUser}
+          />
         </div>
       </MuiThemeProvider>
     );

@@ -31,6 +31,9 @@ class NavBar extends React.Component{
         this.refs.MyPics.className = 'active';
         this.refs.All.className = '';
       }
+    } else {
+      this.refs.MyPics.className = '';
+      this.refs.All.className = '';
     }
   }
   handleAddPic(e) {
@@ -67,13 +70,22 @@ class NavBar extends React.Component{
     // }.bind(this);
     var LogInButton = function() {
       if(this.props.loggedIn) {
-        return (<li><a href="#" onClick={this.handleLogOut}>Logout</a></li>);
+        return (<li><a href="/logout">Logout</a></li>);
       } else {
         return (
-          <li><a href="#" onClick={this.handleLogIn}><i className="fa fa-twitter-square" aria-hidden="true"></i> Login with twitter</a></li>
+          <li><a href="/auth/twitter"><i className="fa fa-twitter-square" aria-hidden="true"></i> Login with twitter</a></li>
         );
       }
     }.bind(this);
+
+    var renderMyPics = function() {
+      if(this.props.loggedIn) {
+        return (
+          <li ref="MyPics"><a href="#" id="MyPics" onClick={this.togglePage}>My Pics</a></li>
+        );
+      }
+    }.bind(this);
+    
     return (
       <div>
         <nav className="navbar navbar-default">
@@ -90,12 +102,12 @@ class NavBar extends React.Component{
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
                 <li className="active" ref="All"><a id="All" href="#" onClick={this.togglePage}>All</a></li>
-                <li ref="MyPics"><a href="#" id="MyPics" onClick={this.togglePage}>My Pics</a></li>
+                {renderMyPics()}
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Add a Pic<span className="caret"></span></a>
                   <ul className="dropdown-menu">
-                    <li><TextField value={this.state.Url} onChange={this.handleChangeUrl} hintText="Add a Url" /></li>
-                    <li><TextField value={this.state.Desc} onChange={this.handleChangeDesc} hintText="Add a description"
+                    <li style={{padding: '0px 10px 0px 10px'}}><TextField  value={this.state.Url} onChange={this.handleChangeUrl} hintText="Add a Url" /></li>
+                    <li style={{padding: '0px 10px 0px 10px'}}><TextField  value={this.state.Desc} onChange={this.handleChangeDesc} hintText="Add a description"
                         multiLine={true}
                         rows={1}
                         rowsMax={4}
@@ -104,12 +116,6 @@ class NavBar extends React.Component{
                   </ul>
                 </li>
               </ul>
-              <form className="navbar-form navbar-left">
-                <div className="form-group">
-                  <input type="text" className="form-control" placeholder="Search a user"/>
-                </div>
-                <button type="submit" className="btn btn-default">Search</button>
-              </form>
               <ul className="nav navbar-nav navbar-right">
                 {LogInButton()}
               </ul>

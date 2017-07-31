@@ -47,6 +47,21 @@ class Main extends React.Component{
     });
   }
 
+  getViewUserPics() {
+    var self = this;
+    Ajax.get(appUrl+'/api/pics/'+this.props.viewUser._id, function(err, data) {
+      if(err) {
+        return console.log(err);
+      }
+      console.log(data);
+      self.setState({
+        pics: data,
+        Loading: 'false',
+        page: 'UserPics'
+      })
+    });
+  }
+
   componentDidUpdate() {
     var self = this;
     console.log(this.props.page);
@@ -56,6 +71,8 @@ class Main extends React.Component{
       }
       if(this.props.page=='All'){
         this.getAllPics();
+      } else if(this.props.page=='UserPics'){
+        this.getViewUserPics();
       } else {
         this.getUserPics();
       }
@@ -76,12 +93,19 @@ class Main extends React.Component{
 
 
   render(){
+    var self = this;
     var childElements = this.state.pics.map(function(pic, i) {
       return (
-        <Pic key={i} pic = {pic} className="grid-items" style={{background: 'red'}}/>
+        <Pic
+          key={i}
+          pic = {pic}
+          handleViewUser={self.props.handleViewUser}
+          className="grid-items"
+          loggedIn={self.props.loggedIn}
+          style={{background: 'red'}}
+        />
       )
     });
-    var self = this;
     var RenderPics = function() {
       console.log(self.state.Loading);
       if(self.state.Loading === 'true'){
